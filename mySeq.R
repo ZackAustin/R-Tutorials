@@ -40,6 +40,7 @@ mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 	stepwise_evaluations <- 1
 	start = 1
 	end = 1
+	
 	if ( (from < to || isTRUE(all.equal(from, to))) && by > 0)
 	{
 		start = from
@@ -50,39 +51,26 @@ mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 		start = to
 		end = from
 	}
-	
+
 	if (start < end || isTRUE(all.equal(start, end)))
 	{
-		results <- c(results, start)
+		nextValue <- from
+		results <- c(results, nextValue)
 		while (start < end || isTRUE(all.equal(start, end)))
-		{
-			start <- start + by
+		{	
+			if (by > 0)
+			{
+				start <- start + by
+				nextValue <- start	
+			}
+			else
+			{
+				end <- end + by
+				nextValue <- end
+			}
 			
 			if (start < end || isTRUE(all.equal(start, end)))
-				results <- c(results, start)
-		}
-	}
-		
-	if (from < to || isTRUE(all.equal(from, to)))
-	{
-		results <- c(results, from)
-		while (from < to || isTRUE(all.equal(from, to)))
-		{
-			from <- from + by
-
-			if (from < to || isTRUE(all.equal(from, to)))
-				results <- c(results, from)
-		}
-	}
-	else
-	{
-		results <- c(results, from)
-		while (from > to || isTRUE(all.equal(from, to)))
-		{
-			from <- from + by
-			
-			if (from > to || isTRUE(all.equal(from, to)))
-				results <- c(results, from)
+				results <- c(results, nextValue)
 		}
 	}
 		
@@ -100,9 +88,9 @@ cat ('test 2: ', mySeq(2, 4, by = 0.05, length.out = 10), '\n\n')
 
 mySeq(0, 1, length.out = 12)
 
-#mySeq(1, 0, length.out = 12)
+mySeq(1, 0, length.out = 12)
 
-#cat ('test 3: ', mySeq(0, 1, length.out = 11), '\n\n')
+cat ('test 3: ', mySeq(0, 1, length.out = 11), '\n\n')
 # mySeq(stats::rnorm(20)) # effectively 'along'
 # mySeq(1, 9, by = 2)     # matches 'end'
 # mySeq(1, 9, by = pi)    # stays below 'end'
