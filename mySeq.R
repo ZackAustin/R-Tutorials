@@ -1,7 +1,6 @@
 # Create our own user-defined seq function while trying to match exact functionality.
 
-options(scipen = 999)
-options(digits = 8)
+options(scipen = 999, digits = 8)
 
 mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 	length.out = NULL, along.with = NULL, ...)
@@ -11,7 +10,7 @@ mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 	{
 		return (c(1))
 	}
-	else if (from < to && by < 0)
+	else if ( (from < to && by < 0) || (from > to && by > 0) )
 	{
 		return (paste ('Error in mySeq.default(', from, ', ', to, ', by = ',
 			by, ', length.out = ', length.out, ') : wrong sign in "by" argument\n',
@@ -22,6 +21,10 @@ mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 		return (paste ('Error in mySeq.default(', from, ', ', to, ', by = ',
 			by, ', length.out = ', length.out, ') : too many arguments\n',
 			sep = ''))
+	}
+	else if (length(match.call()) - 1 == 1)
+	{
+		# 17 would be a vector of 1:17 etc for seq. Type Check? Needs to also handle vector inputs. How do we differentiate this call from ...?
 	}
 	else if (!missing(length.out))
 	{
@@ -74,7 +77,6 @@ mySeq <- function(from = 1, to = 1, by = ((to - from) / (length.out - 1)),
 		}
 	}
 		
-	
 	return (as.numeric(results) )
 }
 
